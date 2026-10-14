@@ -2,6 +2,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.Iterator;
 
 public class JuegoDomino {
     private final Stack<Ficha> pozo;
@@ -22,7 +23,7 @@ public class JuegoDomino {
         this.cadena = new LinkedList<>();
         this.jugadores=new Jugador[this.NJUGADORES];
     }
-    
+
     public JuegoDomino (String nombresJugadores[]) {
         this(nombresJugadores, 7);
     }
@@ -42,7 +43,13 @@ public class JuegoDomino {
     }
 
     private void repartirFichasIniciales() {
-        
+        int tamaño=pozo.size();
+       for(int j=0;j<NJUGADORES;j++){
+           for (int i = 0; i < NFICHAS; i++) {
+               Ficha f = pozo.pop();
+               jugadores[j].recibirFicha(f);
+           }
+        }
     }
 
     public void jugar() {
@@ -110,12 +117,18 @@ public class JuegoDomino {
         
     }
 
-    public void colocarEnIzquierda(Ficha f, int valorExtremo) {
-        
+    protected void colocarEnIzquierda(Ficha f, int valorExtremo) {
+        if (f.getLadoA() == valorExtremo) {
+            f.invertir();
+        }
+        cadena.addFirst(f);
     }
 
-    public void colocarEnDerecha(Ficha f, int valorExtremo) {
-      
+    protected void colocarEnDerecha(Ficha f, int valorExtremo) {
+        if (f.getLadoB() == valorExtremo) {
+            f.invertir();
+        }
+        cadena.addLast(f);
     }
 
     public void mostrarCadena() {
